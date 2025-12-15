@@ -3,18 +3,53 @@
         xmlns:vm="using:StereoPotato.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="StereoPotato.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="StereoPotato">
+        x:DataType="vm:MainWindowViewModel"
+        Title="StereoPotato"
+        Width="1000"
+        Height="700">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+    <DockPanel>
+        <!-- Header Menus -->
+        <Menu DockPanel.Dock="Top">
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <MenuItem Header="_File">
+                <MenuItem Header="New"/>
+                <MenuItem Header="Open"/>
+                <MenuItem Header="Save"/>
+                <Separator/>
+                <MenuItem Header="Exit"/>
+            </MenuItem>
 
+            <MenuItem Header="_Edit">
+                <MenuItem Header="Undo"/>
+                <MenuItem Header="Redo"/>
+                <Separator/>
+                <MenuItem Header="Cut"/>
+                <MenuItem Header="Copy"/>
+                <MenuItem Header="Paste"/>
+            </MenuItem>
+
+            <MenuItem Header="_Select"/>
+
+            <MenuItem Header="_View"/>
+
+            <MenuItem Header="_Transport"/>
+
+            <MenuItem Header="_Tracks"/>
+
+            <MenuItem Header="_Generate"/>
+
+            <MenuItem Header="_Effect"/>
+
+            <MenuItem Header="_Tools"/>
+
+            <MenuItem Header="_Help"/>
+
+        </Menu>
+
+        <!-- Main Content -->
+        <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    </DockPanel>
 </Window>
