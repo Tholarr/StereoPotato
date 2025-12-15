@@ -1,0 +1,3 @@
+C:/Users/USER/devhome/StereoPotato/build/CMakeFiles/AudacityMockSFML.dir
+C:/Users/USER/devhome/StereoPotato/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/USER/devhome/StereoPotato/build/CMakeFiles/ZERO_CHECK.dir

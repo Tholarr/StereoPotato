@@ -1,0 +1,10 @@
+^C:\USERS\USER\DEVHOME\STEREOPOTATO\BUILD\CMAKEFILES\B98F824F905A4DA918408029E2F2C15A\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/USER/devhome/StereoPotato -BC:/Users/USER/devhome/StereoPotato/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/USER/devhome/StereoPotato/build/AudacityMockSFML.slnx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
