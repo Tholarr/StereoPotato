@@ -19,7 +19,7 @@
                 <MenuItem Header="Open" Click="OpenFile_Click"/>
                 <MenuItem Header="Save"/>
                 <Separator/>
-                <MenuItem Header="Exit"/>
+                <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
 
             <MenuItem Header="_Edit">

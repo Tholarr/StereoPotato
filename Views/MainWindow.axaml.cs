@@ -34,4 +34,9 @@ public partial class MainWindow : Window
             Console.WriteLine($"Fichier sélectionné : {result[0]}");
         }
     }
+
+    private void Exit_Click(object? sender, RoutedEventArgs e)
+    {
+        Close();
+    }
 }
