@@ -6,6 +6,7 @@
         x:Class="StereoPotato.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         x:DataType="vm:MainWindowViewModel"
+        WindowStartupLocation="CenterOwner"
         Title="StereoPotato"
         Width="1000"
         Height="700">
