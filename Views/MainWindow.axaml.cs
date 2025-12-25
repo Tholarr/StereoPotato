@@ -21,7 +21,7 @@ public partial class MainWindow : Window
             {
                 new FileDialogFilter
                 {
-                    Name = "WAV audio",
+                    Name = "Select a WAV",
                     Extensions = { "wav" }
                 }
             }
@@ -31,7 +31,7 @@ public partial class MainWindow : Window
 
         if (result != null && result.Length > 0)
         {
-            Console.WriteLine($"Fichier sélectionné : {result[0]}");
+            Console.WriteLine($"File Selected : {result[0]}");
         }
     }
 
