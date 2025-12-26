@@ -1,64 +1,85 @@
 using System;
 using System.IO;
+using StereoPotato.Models;
 
-namespace StereoPotato.Utils;
-
-public static class WavInfoReader
+namespace StereoPotato.Utils
 {
-    public static void PrintWavInfo(string path)
+    public static class WavInfoReader
     {
-        using var fs = File.OpenRead(path);
-        using var reader = new BinaryReader(fs);
-
-        // RIFF header
-        string riff = new string(reader.ReadChars(4));
-        reader.ReadInt32();
-        string wave = new string(reader.ReadChars(4));
-
-        if (riff != "RIFF" || wave != "WAVE")
+        public static WavInfo Read(string path)
         {
-            Console.WriteLine("Invalid WAV file");
-            return;
+            var fileInfo = new FileInfo(path);
+
+            short channels = 0;
+            int sampleRate = 0;
+            short bitsPerSample = 0;
+            int dataSize = 0;
+
+            using var reader = new BinaryReader(File.OpenRead(path));
+
+            var riff = new string(reader.ReadChars(4));
+            reader.ReadInt32(); // file size
+            var wave = new string(reader.ReadChars(4));
+
+            if (riff != "RIFF" || wave != "WAVE")
+                throw new InvalidDataException("Not a valid WAV file");
+
+            while (reader.BaseStream.Position < reader.BaseStream.Length)
+            {
+                var chunkId = new string(reader.ReadChars(4));
+                var chunkSize = reader.ReadInt32();
+
+                if (chunkId == "fmt ")
+                {
+                    reader.ReadInt16(); // audio format
+                    channels = reader.ReadInt16();
+                    sampleRate = reader.ReadInt32();
+                    reader.ReadInt32(); // byte rate
+                    reader.ReadInt16(); // block align
+                    bitsPerSample = reader.ReadInt16();
+
+                    reader.BaseStream.Position += chunkSize - 16;
+                }
+                else if (chunkId == "data")
+                {
+                    dataSize = chunkSize;
+                    break;
+                }
+                else
+                {
+                    reader.BaseStream.Position += chunkSize;
+                }
+            }
+
+            double duration =
+                dataSize / (double)(sampleRate * channels * (bitsPerSample / 8.0));
+
+            var info = new WavInfo
+            {
+                Path = path,
+                FileSizeBytes = fileInfo.Length,
+                Channels = channels,
+                SampleRate = sampleRate,
+                BitsPerSample = bitsPerSample,
+                DurationSeconds = duration
+            };
+
+            Print(info);
+
+            return info;
         }
 
-        short channels = 0;
-        int sampleRate = 0;
-        short bitsPerSample = 0;
-        int dataSize = 0;
-
-        while (reader.BaseStream.Position < reader.BaseStream.Length)
+        private static void Print(WavInfo info)
         {
-            string chunkId = new string(reader.ReadChars(4));
-            int chunkSize = reader.ReadInt32();
+            Console.WriteLine("\n=== FILE INFO ===");
+            Console.WriteLine($"Path : {info.Path}");
+            Console.WriteLine($"Size : {info.FileSizeBytes / 1024.0:F2} KB");
 
-            if (chunkId == "fmt ")
-            {
-                reader.ReadInt16(); // audio format
-                channels = reader.ReadInt16();
-                sampleRate = reader.ReadInt32();
-                reader.ReadInt32(); // byte rate
-                reader.ReadInt16(); // block align
-                bitsPerSample = reader.ReadInt16();
-
-                reader.BaseStream.Position += chunkSize - 16;
-            }
-            else if (chunkId == "data")
-            {
-                dataSize = chunkSize;
-                break;
-            }
-            else
-            {
-                reader.BaseStream.Position += chunkSize;
-            }
+            Console.WriteLine("\n=== WAV INFO ===");
+            Console.WriteLine($"Channels     : {info.Channels}");
+            Console.WriteLine($"Sample Rate  : {info.SampleRate} Hz");
+            Console.WriteLine($"Bits/Sample  : {info.BitsPerSample}");
+            Console.WriteLine($"Duration     : {info.DurationSeconds:F2} seconds");
         }
-
-        double duration =
-            dataSize / (sampleRate * channels * (bitsPerSample / 8.0));
-
-        Console.WriteLine($"Channels     : {channels}");
-        Console.WriteLine($"Sample Rate  : {sampleRate} Hz");
-        Console.WriteLine($"Bits/Sample  : {bitsPerSample}");
-        Console.WriteLine($"Duration     : {duration:F2} seconds");
     }
 }

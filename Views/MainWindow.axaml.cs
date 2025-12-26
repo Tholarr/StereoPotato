@@ -3,6 +3,7 @@ using Avalonia.Interactivity;
 using System;
 using System.IO;
 using StereoPotato.Utils;
+using StereoPotato.Models;
 
 namespace StereoPotato.Views;
 
@@ -31,19 +32,11 @@ public partial class MainWindow : Window
 
         var result = await openFileDialog.ShowAsync(this);
 
-        if (result == null || result.Length == 0)
-            return;
-
-        string path = result[0];
-
-        Console.WriteLine("=== FILE INFO ===");
-        Console.WriteLine($"Path : {path}");
-
-        var fileInfo = new FileInfo(path);
-        Console.WriteLine($"Size : {fileInfo.Length / 1024.0:F2} KB");
-
-        Console.WriteLine("\n=== WAV INFO ===");
-        WavInfoReader.PrintWavInfo(path);
+        if (result != null && result.Length > 0)
+        {
+            Console.WriteLine($"File Selected : {result[0]}");
+            WavInfo info = WavInfoReader.Read(result[0]);
+        }
     }
 
     private void Exit_Click(object? sender, RoutedEventArgs e)
