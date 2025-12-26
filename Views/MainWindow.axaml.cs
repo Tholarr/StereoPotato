@@ -2,7 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using System;
 using System.IO;
-using StereoPotato.Utils;
+using StereoPotato.Readers;
 using StereoPotato.Models;
 
 namespace StereoPotato.Views;

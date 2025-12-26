@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using StereoPotato.Models;
 
-namespace StereoPotato.Utils
+namespace StereoPotato.Readers
 {
     public static class WavInfoReader
     {
